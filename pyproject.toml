@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "loru"
+version = "0.1.0"
+description = "Sign language recognition training: sign-to-text and sign-to-voice"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "MergeOS / ThanhTrucSolutions" }]
+keywords = ["sign-language", "asl", "gesture", "tts", "ml", "accessibility"]
+dependencies = [
+  "typer>=0.12",
+  "rich>=13.7",
+  "pydantic>=2.6",
+  "numpy>=1.26",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.4",
+]
+torch = [
+  "torch>=2.2",
+]
+api = [
+  "fastapi>=0.110",
+  "uvicorn>=0.27",
+]
+voice = [
+  "pyttsx3>=2.90",
+]
+
+[project.scripts]
+loru = "loru.cli:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
