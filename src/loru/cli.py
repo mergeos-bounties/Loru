@@ -36,6 +36,14 @@ def version_cmd() -> None:
     console.print(f"Demo gloss vocab ({len(DEFAULT_GLOSS)}): {', '.join(DEFAULT_GLOSS)}")
 
 
+@app.command("gui")
+def gui_cmd() -> None:
+    """Launch modern Qt desktop demo (pip install -e '.[gui]')."""
+    from loru.gui.app import main as gui_main
+
+    raise SystemExit(gui_main())
+
+
 @app.command("demo")
 def demo_cmd() -> None:
     """Run full offline demo: list samples, train, infer text+voice on hello."""

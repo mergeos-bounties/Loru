@@ -1,7 +1,8 @@
 # Loru
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
-[![Version](https://img.shields.io/badge/version-0.2.1-0E8A16.svg)](pyproject.toml)
+[![Version](https://img.shields.io/badge/version-0.3.0-0E8A16.svg)](pyproject.toml)
+[![Qt GUI](https://img.shields.io/badge/GUI-PySide6-41CD52.svg)](src/loru/gui/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![MergeOS](https://img.shields.io/badge/MergeOS-bounties-5319E7.svg)](https://github.com/mergeos-bounties)
 
@@ -15,6 +16,7 @@ Product: [mergeos-bounties/Loru](https://github.com/mergeos-bounties/Loru)
 
 - [Highlights](#highlights)
 - [Screenshots](#screenshots)
+- [Desktop GUI (Qt)](#desktop-gui-qt)
 - [Quick start](#quick-start)
 - [CLI reference](#cli-reference)
 - [Data & pipeline](#data--pipeline)
@@ -33,6 +35,7 @@ Product: [mergeos-bounties/Loru](https://github.com/mergeos-bounties/Loru)
 | **Sign → text** | Landmark JSON sequences → gloss / sentence |
 | **Sign → voice** | Recognition + TTS-style WAV export |
 | **Offline demo** | Samples, toy train, infer `hello` end-to-end |
+| **Desktop GUI** | Modern **PySide6** app (`loru-gui`) |
 | **Gloss vocab** | Default gloss set for demos |
 | **Serve** | Optional FastAPI for integrations |
 
@@ -47,17 +50,60 @@ Product: [mergeos-bounties/Loru](https://github.com/mergeos-bounties/Loru)
 
 ---
 
+## Desktop GUI (Qt)
+
+Modern dark **PySide6** demo shell — full demo, samples, infer, train, gloss vocab.
+
+```powershell
+pip install -e ".[gui]"
+loru-gui
+# or: loru gui
+```
+
+<p align="center">
+  <img src="docs/screenshots/gui-demo.png" alt="Loru GUI — Full demo" width="100%" />
+</p>
+
+*Full offline demo (train → text → WAV)*
+
+<p align="center">
+  <img src="docs/screenshots/gui-samples.png" alt="Loru GUI — Samples" width="100%" />
+</p>
+
+*Landmark sample catalog*
+
+<p align="center">
+  <img src="docs/screenshots/gui-infer.png" alt="Loru GUI — Infer" width="100%" />
+</p>
+
+*Inference (sign→text / voice / gloss)*
+
+<p align="center">
+  <img src="docs/screenshots/gui-train.png" alt="Loru GUI — Train" width="100%" />
+</p>
+
+*Toy train*
+
+<p align="center">
+  <img src="docs/screenshots/gui-vocab.png" alt="Loru GUI — Vocab" width="100%" />
+</p>
+
+*Default gloss vocabulary*
+
+---
+
 ## Quick start
 
 ```powershell
 cd Loru
 python -m venv .venv
 .\.venv\Scripts\activate
-pip install -e ".[dev]"
+pip install -e ".[dev,gui]"
 
 loru version
 loru data list
 loru demo
+loru-gui          # Qt desktop demo
 ```
 
 Demo writes audio under the configured output directory (e.g. `demo_hello.wav`).
@@ -70,6 +116,7 @@ Demo writes audio under the configured output directory (e.g. `demo_hello.wav`).
 | --- | --- |
 | `loru version` | Version + demo gloss vocab |
 | `loru demo` | Train smoke + infer text + voice on `hello` |
+| `loru gui` / `loru-gui` | **Qt desktop app** (needs `.[gui]`) |
 | `loru data list` | Landmark sample files |
 | `loru infer demo -s hello` | Gloss → sentence |
 | `loru infer text …` | Sign file → text |
@@ -79,6 +126,7 @@ Demo writes audio under the configured output directory (e.g. `demo_hello.wav`).
 ```powershell
 loru infer demo --sign thank_you
 loru demo
+loru-gui
 ```
 
 ---
