@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from pathlib import Path
-
 from loru.config import SAMPLES_DIR
 from loru.data.loader import list_sample_files, load_sequence, sequence_summary
 
