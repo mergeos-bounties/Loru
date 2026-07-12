@@ -38,6 +38,7 @@ DEFAULT_GLOSS = [
     "today",
     "understand",
     "again",
+    "more",
 ]
 
 

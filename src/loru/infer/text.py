@@ -42,6 +42,7 @@ TEMPLATES = {
     "today": "Today.",
     "understand": "I understand.",
     "again": "Again.",
+    "more": "I want more.",
 }
 
 
