@@ -37,5 +37,6 @@ def gloss_to_sentence(gloss: str) -> str:
         "name": "What is your name?",
         "water": "I want water.",
         "good": "That is good.",
+        "handshape_g": "Handshape G.",
     }
     return templates.get(gloss.lower(), gloss.replace("_", " ").strip().capitalize() + ".")

@@ -12,6 +12,7 @@ DEFAULT_GLOSS = [
     "name",
     "water",
     "good",
+    "handshape_g",
 ]
 
 
