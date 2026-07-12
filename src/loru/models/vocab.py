@@ -34,6 +34,7 @@ DEFAULT_GLOSS = [
     "small",
     "welcome",
     "maybe",
+    "wait",
 ]
 
 
