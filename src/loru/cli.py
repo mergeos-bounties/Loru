@@ -126,6 +126,23 @@ def data_sentence(
     )
 
 
+@data_app.command("coverage")
+def data_coverage() -> None:
+    """Which DEFAULT_GLOSS entries have bundled sample JSON."""
+    files = {p.stem for p in list_sample_files()}
+    table = Table(title="Gloss sample coverage")
+    table.add_column("Gloss")
+    table.add_column("Sample")
+    have = 0
+    for g in DEFAULT_GLOSS:
+        ok = g in files
+        if ok:
+            have += 1
+        table.add_row(g, "yes" if ok else "no")
+    console.print(table)
+    console.print(f"[dim]{have}/{len(DEFAULT_GLOSS)} glosses have samples[/dim]")
+
+
 @data_app.command("list")
 def data_list() -> None:
     files = list_sample_files()
