@@ -165,6 +165,29 @@ def data_coverage() -> None:
     console.print(f"[dim]{have}/{len(DEFAULT_GLOSS)} glosses have samples[/dim]")
 
 
+@data_app.command("export-csv")
+def data_export_csv(
+    out: Path = typer.Option(None, "--out", "-o", help="Output CSV file path. Default: data/out/vocab_export.csv"),
+) -> None:
+    """Export gloss vocabulary as CSV with index and has_sample flag (for teachers)."""
+    import csv
+
+    from loru.config import OUT_DIR
+
+    files = {p.stem for p in list_sample_files()}
+    out_path = out or (OUT_DIR / "vocab_export.csv")
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+    rows = []
+    for i, g in enumerate(DEFAULT_GLOSS):
+        has_sample = "true" if g in files else "false"
+        rows.append({"index": str(i), "gloss": g, "has_sample": has_sample})
+    with open(out_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=["index", "gloss", "has_sample"])
+        writer.writeheader()
+        writer.writerows(rows)
+    console.print(f"[green]CSV written[/green] → {out_path} ({len(rows)} rows)")
+
+
 @data_app.command("list")
 def data_list() -> None:
     files = list_sample_files()
