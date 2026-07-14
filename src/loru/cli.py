@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Optional
 
 import typer
 from rich.console import Console
@@ -10,6 +11,7 @@ from rich.table import Table
 from loru import __version__
 from loru.config import OUT_DIR, RUNS_DIR, SAMPLES_DIR
 from loru.data.loader import list_sample_files, sequence_summary
+from loru.data.stats import compute_sequence_stats, detect_outliers, print_stats_table, print_outliers_table, print_summary
 from loru.infer.pipeline import sign_to_voice
 from loru.infer.text import gloss_to_sentence, multi_gloss_to_sentence, sign_to_text
 from loru.models.vocab import DEFAULT_GLOSS
@@ -35,6 +37,26 @@ def version_cmd() -> None:
     console.print(f"Loru {__version__}")
     console.print(f"Demo gloss vocab ({len(DEFAULT_GLOSS)}): {', '.join(DEFAULT_GLOSS)}")
 
+
+
+
+
+@data_app.command("stats")
+def stats_cmd(
+    method: str = typer.Option("iqr", help="Outlier detection method (iqr or zscore)"),
+    threshold: float = typer.Option(1.5, help="Outlier threshold"),
+    directory: Optional[str] = typer.Option(None, help="Custom samples directory"),
+) -> None:
+    """Report frame counts per sample and flag outliers."""
+    from loru.config import SAMPLES_DIR
+    
+    dir_path = Path(directory) if directory else SAMPLES_DIR
+    stats = compute_sequence_stats(dir_path)
+    outliers = detect_outliers(stats, method=method, threshold=threshold)
+    
+    print_stats_table(stats)
+    print_outliers_table(outliers)
+    print_summary(stats, outliers)
 
 @app.command("gui")
 def gui_cmd() -> None:
