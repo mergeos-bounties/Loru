@@ -46,6 +46,9 @@ DEFAULT_GLOSS = [
     "why",
     "family",
     "work",
+    "later",
+    "tomorrow",
+    "yesterday",
 ]
 
 
