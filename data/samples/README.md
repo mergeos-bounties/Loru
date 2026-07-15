@@ -10,6 +10,7 @@ Synthetic landmark JSON for the offline toy classifier.
 | `source` | `synthetic-scaffold` — not real signer video |
 
 These are **not** real sign language recordings. Replace with consented / licensed corpora via bounties.
+See [Gloss sample notes](../../docs/GLOSS_SAMPLE_NOTES.md) for the unique-frame rule and seed formula for synthetic samples.
 
 ## Cycle 2026-07-14b
 
