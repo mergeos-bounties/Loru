@@ -23,3 +23,5 @@ Cycle 2026-07-15o: soon gloss with unique synthetic frames.
 Cycle 2026-07-15p: always gloss with unique synthetic frames.
 
 Cycle 2026-07-15q: never gloss with unique synthetic frames.
+
+Cycle 2026-07-15r: sometimes gloss with unique synthetic frames.

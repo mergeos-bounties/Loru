@@ -1,3 +1,3 @@
 """Loru: sign-to-text and sign-to-voice training toolkit."""
 
-__version__ = "0.3.39"
+__version__ = "0.3.40"

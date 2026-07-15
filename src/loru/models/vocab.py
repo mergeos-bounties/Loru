@@ -57,6 +57,7 @@ DEFAULT_GLOSS = [
     "soon",
     "always",
     "never",
+    "sometimes",
 ]
 
 
