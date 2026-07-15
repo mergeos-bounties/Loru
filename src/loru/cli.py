@@ -12,6 +12,7 @@ from loru import __version__
 from loru.config import OUT_DIR, RUNS_DIR, SAMPLES_DIR
 from loru.data.loader import list_sample_files, sequence_summary
 from loru.data.stats import compute_sequence_stats, detect_outliers, print_stats_table, print_outliers_table, print_summary
+from loru.data.wlasl import load_wlasl_manifest, write_wlasl_manifest
 from loru.infer.pipeline import sign_to_voice
 from loru.infer.text import gloss_to_sentence, multi_gloss_to_sentence, sign_to_text
 from loru.models.vocab import DEFAULT_GLOSS
@@ -163,6 +164,38 @@ def data_coverage() -> None:
         table.add_row(g, "yes" if ok else "no")
     console.print(table)
     console.print(f"[dim]{have}/{len(DEFAULT_GLOSS)} glosses have samples[/dim]")
+
+
+@data_app.command("wlasl-manifest")
+def data_wlasl_manifest(
+    index: Path = typer.Option(
+        ...,
+        "--index",
+        "-i",
+        exists=True,
+        dir_okay=False,
+        help="WLASL-style index JSON file.",
+    ),
+    samples_dir: Path | None = typer.Option(
+        None,
+        "--samples-dir",
+        file_okay=False,
+        help="Directory of local Loru sample JSON files to match by normalized gloss.",
+    ),
+    out: Path | None = typer.Option(
+        None,
+        "--out",
+        "-o",
+        help="Optional output path for the converted manifest JSON.",
+    ),
+) -> None:
+    """Convert WLASL-style metadata into a Loru sequence manifest."""
+    if out:
+        manifest = write_wlasl_manifest(index, out, samples_dir=samples_dir)
+        console.print(f"[green]WLASL manifest[/green] {out} entries={len(manifest)}")
+        return
+
+    console.print_json(data=load_wlasl_manifest(index, samples_dir=samples_dir))
 
 
 @data_app.command("export-csv")

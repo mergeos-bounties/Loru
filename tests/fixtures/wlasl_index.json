@@ -1,0 +1,27 @@
+[
+  {
+    "gloss": "Thank You",
+    "instances": [
+      {
+        "video_id": "wlasl-thank-you-001",
+        "url": "https://example.invalid/wlasl/thank-you.mp4",
+        "split": "train",
+        "frame_start": 1,
+        "frame_end": 48
+      }
+    ]
+  },
+  {
+    "gloss": "HELLO",
+    "instances": [
+      {
+        "video_id": "wlasl-hello-001",
+        "url": "https://example.invalid/wlasl/hello.mp4",
+        "split": "test",
+        "frame_start": 3,
+        "frame_end": 34,
+        "sequence_path": "../../data/samples/hello.json"
+      }
+    ]
+  }
+]
