@@ -55,6 +55,7 @@ DEFAULT_GLOSS = [
     "afternoon",
     "evening",
     "soon",
+    "always",
 ]
 
 

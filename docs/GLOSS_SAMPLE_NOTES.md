@@ -19,3 +19,5 @@ Cycle 2026-07-15m: afternoon gloss with unique synthetic frames.
 Cycle 2026-07-15n: evening gloss with unique synthetic frames.
 
 Cycle 2026-07-15o: soon gloss with unique synthetic frames.
+
+Cycle 2026-07-15p: always gloss with unique synthetic frames.
