@@ -41,20 +41,25 @@ class ToySignClassifier:
         return cls(prototypes)
 
     def predict(self, frames: np.ndarray) -> tuple[str, float]:
-        if frames.size == 0:
+        ranked = self.predict_top_k(frames, k=1)
+        if not ranked:
             return "unknown", 0.0
+        return ranked[0]
+
+    def predict_top_k(self, frames: np.ndarray, k: int = 3) -> list[tuple[str, float]]:
+        if frames.size == 0:
+            return []
         feature = frames.reshape(frames.shape[0], -1).mean(axis=0)
-        best_gloss = "unknown"
-        best_score = -1e18
+        scored: list[tuple[str, float]] = []
         for gloss, proto in self.prototypes.items():
             # cosine similarity with zero-safe norm
             a = feature
             b = proto
             denom = (np.linalg.norm(a) * np.linalg.norm(b)) + 1e-9
             score = float(np.dot(a, b) / denom)
-            if score > best_score:
-                best_score = score
-                best_gloss = gloss
-        # map raw cosine [-1,1] roughly into [0,1]
-        confidence = max(0.0, min(1.0, (best_score + 1.0) / 2.0))
-        return id_to_gloss(DEFAULT_GLOSS.index(best_gloss)) if best_gloss in DEFAULT_GLOSS else best_gloss, confidence
+            # map raw cosine [-1,1] roughly into [0,1]
+            confidence = max(0.0, min(1.0, (score + 1.0) / 2.0))
+            label = id_to_gloss(DEFAULT_GLOSS.index(gloss)) if gloss in DEFAULT_GLOSS else gloss
+            scored.append((label, confidence))
+        scored.sort(key=lambda item: item[1], reverse=True)
+        return scored[: max(1, k)]
