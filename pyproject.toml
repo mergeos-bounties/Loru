@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "loru"
-version = "0.3.55"
+version = "0.3.56"
 description = "Sign language recognition training: sign-to-text and sign-to-voice"
 readme = "README.md"
 requires-python = ">=3.11"
