@@ -384,3 +384,16 @@ def serve_cmd(
 
 if __name__ == "__main__":
     app()
+
+
+@eval_app.command("report")
+def eval_report_cmd(
+    out: str = typer.Option(None, "--out", help="Output JSON path (default: data/runs/metrics.json)"),
+    top_k: int = typer.Option(5, "--top-k", help="Top-K for accuracy"),
+) -> None:
+    """Generate evaluation metrics report (top-k accuracy, confusion matrix, JSON export)."""
+    from loru.config import RUNS_DIR
+    from loru.eval.metrics import generate_report
+
+    output_path = Path(out) if out else RUNS_DIR / "metrics.json"
+    generate_report(output_path=output_path, top_k=top_k)
