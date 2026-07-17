@@ -10,6 +10,7 @@ from rich.table import Table
 
 from loru import __version__
 from loru.config import OUT_DIR, RUNS_DIR, SAMPLES_DIR
+from loru.data.duplicates import find_near_duplicate_glosses
 from loru.data.loader import list_sample_files, sequence_summary
 from loru.data.stats import compute_sequence_stats, detect_outliers, print_stats_table, print_outliers_table, print_summary
 from loru.data.wlasl import load_wlasl_manifest, write_wlasl_manifest
@@ -164,6 +165,48 @@ def data_coverage() -> None:
         table.add_row(g, "yes" if ok else "no")
     console.print(table)
     console.print(f"[dim]{have}/{len(DEFAULT_GLOSS)} glosses have samples[/dim]")
+
+
+@data_app.command("duplicates")
+def data_duplicates(
+    directory: Path | None = typer.Option(None, "--directory", "-d", file_okay=False),
+    threshold: float = typer.Option(0.9, "--threshold", min=0.0, max=1.0),
+    max_offset: int = typer.Option(4, "--max-offset", min=0),
+    min_overlap: int = typer.Option(4, "--min-overlap", min=1),
+    decimals: int = typer.Option(3, "--decimals", min=0, max=8),
+    fail_on_match: bool = typer.Option(False, "--fail-on-match"),
+) -> None:
+    """Detect near-duplicate gloss frame sequences by rounded frame hashes."""
+    files = list_sample_files(directory)
+    matches = find_near_duplicate_glosses(
+        files,
+        threshold=threshold,
+        max_offset=max_offset,
+        min_overlap=min_overlap,
+        decimals=decimals,
+    )
+    if not matches:
+        console.print("[green]No near-duplicate gloss frame sequences detected.[/green]")
+        return
+
+    table = Table(title=f"Near-duplicate gloss frames ({len(matches)})")
+    table.add_column("Left")
+    table.add_column("Right")
+    table.add_column("Score", justify="right")
+    table.add_column("Offset", justify="right")
+    table.add_column("Overlap", justify="right")
+    for match in matches:
+        table.add_row(
+            Path(match["left"]).name,
+            Path(match["right"]).name,
+            f"{match['score']:.3f}",
+            str(match["offset"]),
+            str(match["overlap"]),
+        )
+    console.print(table)
+    console.print_json(data={"matches": matches})
+    if fail_on_match:
+        raise typer.Exit(1)
 
 
 @data_app.command("wlasl-manifest")

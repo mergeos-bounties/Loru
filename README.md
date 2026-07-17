@@ -115,6 +115,7 @@ Demo writes audio under the configured output directory (e.g. `demo_hello.wav`).
 | `loru demo` | Train smoke + infer text + voice on `hello` |
 | `loru gui` / `loru-gui` | **Qt desktop app** (needs `.[gui]`) |
 | `loru data list` | Landmark sample files |
+| `loru data duplicates` | Near-duplicate gloss frame detector |
 | `loru infer demo -s hello` | Gloss → sentence |
 | `loru infer text …` | Sign file → text |
 | `loru train` / `eval` | Toy train + evaluation |
@@ -122,6 +123,7 @@ Demo writes audio under the configured output directory (e.g. `demo_hello.wav`).
 
 ```powershell
 loru infer demo --sign thank_you
+loru data duplicates --directory data/samples
 loru demo
 loru-gui
 ```
@@ -194,9 +196,12 @@ docs/diagrams/
 ```powershell
 pytest -q
 ruff check src tests
+loru data duplicates --directory data/samples
 loru demo
 python scripts/capture_gui_shots.py   # refresh GUI screenshots
 ```
+
+Use `--fail-on-match` in CI or pytest fixtures when duplicate gloss frames should block a dataset update.
 
 ---
 
