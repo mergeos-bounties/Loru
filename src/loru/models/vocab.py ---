@@ -1,0 +1,65 @@
+```python
+from __future__ import annotations
+
+# Runnable demo gloss vocabulary (isolated signs with bundled synthetic samples).
+DEFAULT_GLOSS = [
+    "hello",
+    "thanks",
+    "yes",
+    "no",
+    "help",
+    "please",
+    "love",
+    "name",
+    "water",
+    "good",
+    "goodbye",
+    "sorry",
+    "stop",
+    "want",
+    "happy",
+    "sad",
+    "mother",
+    "father",
+    "friend",
+    "eat",
+    "drink",
+    "home",
+    "school",
+    "go",
+    "come",
+    "see",
+    "know",
+    "again",
+    "more",
+    "big",
+    "small",
+    "welcome",
+    "work",
+    "later",
+    "tomorrow",
+    "yesterday",
+    "outside",
+    "inside",
+    "night",
+    "morning",
+    "afternoon",
+    "evening",
+    "soon",
+    "always",
+    "never",
+    "sometimes",
+    "family",
+]
+
+def gloss_to_id(gloss: str) -> int:
+    key = gloss.lower().strip().replace(" ", "_")
+    if key not in DEFAULT_GLOSS:
+        raise ValueError(f"Unknown gloss: {gloss}")
+    return DEFAULT_GLOSS.index(key)
+
+def id_to_gloss(index: int) -> str:
+    if index < 0 or index >= len(DEFAULT_GLOSS):
+        raise ValueError(f"Invalid index: {index}")
+    return DEFAULT_GLOSS[index]
+```

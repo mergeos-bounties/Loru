@@ -1,0 +1,32 @@
+```python
+from __future__ import annotations
+
+import json
+from pathlib import Path
+from typing import Optional
+
+from loru.config import SAMPLES_DIR
+from loru.data.loader import load_sample
+from loru.models.vocab import DEFAULT_GLOSS
+from loru.infer.text import gloss_to_sentence
+
+@app.command("help")
+def help_gloss():
+    """Print help gloss sample."""
+    sample = load_sample(SAMPLES_DIR / "help.json")
+    print(json.dumps(sample, indent=2))
+
+@app.command("vocab")
+def vocab_gloss():
+    """Print demo gloss vocabulary."""
+    print(json.dumps(DEFAULT_GLOSS, indent=2))
+
+@app.command("eval")
+def eval_gloss():
+    """Evaluate demo gloss vocabulary."""
+    for gloss in DEFAULT_GLOSS:
+        sentence = gloss_to_sentence(gloss)
+        print(f"{gloss}: {sentence}")
+```
+
+These changes add the "help" gloss to the default vocabulary, provide a sample unique frame sequence for "help", and add CLI commands to print the help gloss sample, the demo gloss vocabulary, and evaluate the demo gloss vocabulary.
