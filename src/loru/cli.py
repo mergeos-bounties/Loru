@@ -13,6 +13,7 @@ from loru.config import OUT_DIR, RUNS_DIR, SAMPLES_DIR
 from loru.data.loader import list_sample_files, sequence_summary
 from loru.data.stats import compute_sequence_stats, detect_outliers, print_stats_table, print_outliers_table, print_summary
 from loru.data.wlasl import load_wlasl_manifest, write_wlasl_manifest
+from loru.eval.metrics import confusion_matrix_table, evaluate_samples
 from loru.infer.pipeline import sign_to_voice
 from loru.infer.text import gloss_to_sentence, multi_gloss_to_sentence, sign_to_text
 from loru.models.vocab import DEFAULT_GLOSS
@@ -349,6 +350,41 @@ def eval_toy() -> None:
     (RUNS_DIR / "eval_toy.json").write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
     if acc < 0.8:
         raise typer.Exit(1)
+
+
+@eval_app.command("report")
+def eval_report(
+    out: Path = typer.Option(
+        Path("data/runs/metrics.json"),
+        "--out",
+        "-o",
+        help="Output metrics JSON path.",
+    ),
+    samples_dir: Path | None = typer.Option(
+        None,
+        "--samples-dir",
+        file_okay=False,
+        help="Directory of local sample JSON files.",
+    ),
+) -> None:
+    """Write top-k accuracy and confusion matrix metrics for local samples."""
+    files = list_sample_files(samples_dir)
+    if not files:
+        console.print("[yellow]No samples[/yellow]")
+        raise typer.Exit(1)
+
+    report = evaluate_samples(files)
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
+
+    summary = Table(title="Evaluation report")
+    summary.add_column("metric")
+    summary.add_column("value", justify="right")
+    for name, value in report["top_k_accuracy"].items():
+        summary.add_row(name, f"{value:.4f}")
+    console.print(summary)
+    console.print(confusion_matrix_table(report["confusion_matrix"], report["labels"]))
+    console.print(f"[green]metrics written[/green] {out}")
 
 
 @train_app.command("toy")
