@@ -18,4 +18,5 @@ def test_load_sequence_shapes() -> None:
     assert frames.shape[0] >= 1
     summary = sequence_summary(path)
     assert summary["gloss"] == gloss
+    assert summary["language"]
     assert summary["frames"] == frames.shape[0]

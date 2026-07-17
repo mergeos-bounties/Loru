@@ -23,10 +23,12 @@ app = typer.Typer(
     no_args_is_help=True,
 )
 data_app = typer.Typer(help="Dataset helpers")
+samples_app = typer.Typer(help="Browse local landmark samples")
 infer_app = typer.Typer(help="Inference (sign→text / sign→voice)")
 train_app = typer.Typer(help="Training")
 eval_app = typer.Typer(help="Evaluation")
 app.add_typer(data_app, name="data")
+app.add_typer(samples_app, name="samples")
 app.add_typer(infer_app, name="infer")
 app.add_typer(train_app, name="train")
 app.add_typer(eval_app, name="eval")
@@ -234,6 +236,53 @@ def data_list() -> None:
     for path in files:
         summary = sequence_summary(path)
         table.add_row(path.name, summary["gloss"], str(summary["frames"]))
+    console.print(table)
+
+
+@samples_app.command("list")
+def samples_list(
+    gloss: str | None = typer.Option(
+        None,
+        "--gloss",
+        "-g",
+        help="Case-insensitive gloss substring to include.",
+    ),
+    directory: Path | None = typer.Option(
+        None,
+        "--directory",
+        "-d",
+        exists=True,
+        file_okay=False,
+        help="Custom sample directory. Defaults to data/samples.",
+    ),
+) -> None:
+    """List samples with language and frame counts, optionally filtered by gloss."""
+    query = gloss.strip().lower() if gloss else None
+    rows = []
+    for path in list_sample_files(directory):
+        summary = sequence_summary(path)
+        if query and query not in summary["gloss"]:
+            continue
+        rows.append((path, summary))
+
+    root = directory or SAMPLES_DIR
+    if not rows:
+        detail = f" matching gloss '{gloss}'" if gloss else ""
+        console.print(f"[yellow]No samples{detail} in {root}[/yellow]")
+        raise typer.Exit()
+
+    table = Table(title=f"Samples ({len(rows)})")
+    table.add_column("File")
+    table.add_column("Gloss")
+    table.add_column("Language")
+    table.add_column("Frames", justify="right")
+    for path, summary in rows:
+        table.add_row(
+            path.name,
+            summary["gloss"],
+            summary["language"],
+            str(summary["frames"]),
+        )
     console.print(table)
 
 
