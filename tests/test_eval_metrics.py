@@ -25,11 +25,16 @@ def test_top_k_accuracy_empty():
 
 
 def test_confusion_matrix_basic():
+    # confusion_matrix returns {true_label: {predicted_label: count}}
+    # Inputs: predictions=["a","b","a"], true_labels=["a","b","b"]
+    #   sample 1: true=a, pred=a  -> matrix[a][a] += 1
+    #   sample 2: true=b, pred=b  -> matrix[b][b] += 1
+    #   sample 3: true=b, pred=a  -> matrix[b][a] += 1
     cm = confusion_matrix(["a", "b", "a"], ["a", "b", "b"])
-    assert cm["a"]["a"] == 1
-    assert cm["a"]["b"] == 1
-    assert cm["b"]["a"] == 0
-    assert cm["b"]["b"] == 1
+    assert cm["a"]["a"] == 1   # sample 1 (correct prediction)
+    assert cm["a"]["b"] == 0   # no sample has true=a, pred=b
+    assert cm["b"]["a"] == 1   # sample 3 (misclassification)
+    assert cm["b"]["b"] == 1   # sample 2 (correct prediction)
 
 
 def test_confusion_matrix_with_labels():
@@ -51,7 +56,7 @@ def test_evaluate_samples_returns_dict():
 
 def test_generate_report_saves_json(tmp_path: Path):
     out = tmp_path / "metrics.json"
-    report = generate_report(output_path=out)
+    generate_report(output_path=out)  # side effect: writes JSON
     assert out.exists()
     import json
     saved = json.loads(out.read_text())
