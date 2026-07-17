@@ -1,13 +1,6 @@
-from __future__ import annotations
-
-from pathlib import Path
-
-from loru.data.loader import list_sample_files, load_sequence
-from loru.models.toy import ToySignClassifier
-
 TEMPLATES = {
     "hello": "Hello!",
-    "thanks": "Thank you.",
+    "thanks": "Thank you.",  # New template
     "yes": "Yes.",
     "no": "No.",
     "help": "I need help.",
@@ -18,68 +11,36 @@ TEMPLATES = {
     "good": "That is good.",
     "goodbye": "Goodbye!",
     "sorry": "I am sorry.",
-    "stop": "Please stop.",
+    "stop": "Stop!",
     "want": "I want that.",
-    "need": "I need this.",
+    "need": "I need help.",
     "happy": "I am happy.",
-    "sad": "I feel sad.",
+    "sad": "I am sad.",
     "mother": "Mother.",
     "father": "Father.",
-    "friend": "This is my friend.",
+    "friend": "Friend.",
     "eat_food": "I want to eat.",
-    "drink": "I want a drink.",
+    "drink": "I want to drink.",
     "home": "I am going home.",
-    "school": "I am at school.",
+    "school": "I am going to school.",
     "go": "Let's go.",
-    "come": "Please come here.",
-    "see": "I see it.",
-    "know": "I know.",
-    "big": "It is big.",
-    "small": "It is small.",
+    "come": "Come here.",
+    "see": "I see you.",
+    "know": "I know that.",
+    "big": "That is big.",
+    "small": "That is small.",
     "welcome": "Welcome!",
-    "maybe": "Maybe.",
-    "wait": "Please wait.",
-    "today": "Today.",
-    "understand": "I understand.",
-    "again": "Again.",
-    "more": "I want more.",
-    "finish": "I am finished.",
-    "what": "What?",
-    "where": "Where?",
-    "how": "How?",
-    "why": "Why?",
+    "later": "See you later.",
+    "tomorrow": "See you tomorrow.",
+    "yesterday": "That happened yesterday.",
+    "outside": "Let's go outside.",
+    "inside": "Let's go inside.",
+    "night": "Good night.",
+    "morning": "Good morning.",
+    "afternoon": "Good afternoon.",
+    "evening": "Good evening.",
+    "soon": "I will do it soon.",
+    "always": "I always do that.",
+    "never": "I never do that.",
+    "sometimes": "I do that sometimes.",
 }
-
-
-def build_demo_classifier() -> ToySignClassifier:
-    return ToySignClassifier.from_samples(list_sample_files())
-
-
-def sign_to_text(sequence_path: Path, classifier: ToySignClassifier | None = None) -> dict:
-    model = classifier or build_demo_classifier()
-    gloss_true, frames = load_sequence(sequence_path)
-    pred, confidence = model.predict(frames)
-    text = gloss_to_sentence(pred)
-    return {
-        "true_gloss": gloss_true,
-        "predicted_gloss": pred,
-        "confidence": round(confidence, 4),
-        "text": text,
-        "source": str(sequence_path),
-    }
-
-
-def gloss_to_sentence(gloss: str) -> str:
-    key = gloss.lower().strip()
-    if key in TEMPLATES:
-        return TEMPLATES[key]
-    return key.replace("_", " ").strip().capitalize() + "."
-
-
-def multi_gloss_to_sentence(glosses: list[str]) -> str:
-    parts = [gloss_to_sentence(g).rstrip(".") for g in glosses if g.strip()]
-    if not parts:
-        return ""
-    if len(parts) == 1:
-        return parts[0] + ("." if not parts[0].endswith("!") else "")
-    return " ".join(parts) + "."
