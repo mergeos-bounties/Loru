@@ -1,0 +1,62 @@
+```python
+from __future__ import annotations
+
+import pytest
+from loru.models.vocab import DEFAULT_GLOSS, gloss_to_id
+from loru.infer.text import gloss_to_sentence
+
+@pytest.mark.parametrize("gloss, expected", [
+    ("hello", "Hello!"),
+    ("thanks", "Thank you!"),
+    ("yes", "Yes."),
+    ("no", "No."),
+    ("help", "I need help."),
+    ("please", "Please."),
+    ("love", "I love this."),
+    ("name", "What is your name?"),
+    ("water", "I want water."),
+    ("good", "That is good."),
+    ("bye", "Goodbye!"),
+    ("sorry", "I am sorry."),
+    ("stop", "Stop!"),
+    ("want", "I want that."),
+    ("need", "I need help."),
+    ("happy", "I am happy."),
+    ("sad", "I am sad."),
+    ("mom", "This is my mom."),
+    ("dad", "This is my dad."),
+    ("friend", "This is my friend."),
+    ("food", "I want food."),
+    ("drink", "I want a drink."),
+    ("home", "I am going home."),
+    ("school", "I am at school."),  # Add test for 'school' gloss
+    ("go", "Let's go."),
+    ("come", "Please come here."),
+    ("see", "I see it."),
+    ("know", "I know that."),
+    ("big", "It is big."),
+    ("small", "It is small."),
+    ("welcome", "Welcome!"),
+    ("maybe", "Maybe."),
+    ("wait", "Please wait."),
+    ("today", "Today."),
+    ("tomorrow", "Tomorrow."),
+    ("yesterday", "Yesterday."),
+    ("outside", "Outside."),
+    ("inside", "Inside."),
+    ("night", "It is night."),
+    ("morning", "Good morning."),
+    ("afternoon", "Good afternoon."),
+    ("evening", "Good evening."),
+    ("soon", "Soon."),
+    ("always", "Always."),
+    ("never", "Never."),
+    ("sometimes", "Sometimes."),
+    ("family", "This is my family."),
+    ("work", "I am at work."),
+])
+def test_gloss_to_sentence(gloss: str, expected: str) -> None:
+    assert gloss_to_sentence(gloss) == expected
+```
+
+These changes add the "school" gloss to the default vocabulary and update the corresponding template and test.
