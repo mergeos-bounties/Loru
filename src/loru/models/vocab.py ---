@@ -1,0 +1,91 @@
+```python
+from __future__ import annotations
+
+# Runnable demo gloss vocabulary (isolated signs with bundled synthetic samples).
+DEFAULT_GLOSS = [
+    "hello",
+    "thanks",
+    "yes",
+    "no",
+    "help",
+    "please",
+    "love",
+    "name",
+    "water",
+    "good",
+    "bye",
+    "sorry",
+    "stop",
+    "want",
+    "need",
+    "happy",
+    "sad",
+    "mom",
+    "dad",
+    "friend",
+    "food",
+    "drink",
+    "home",
+    "school",  # Add 'school' to the default gloss vocabulary
+    "go",
+    "come",
+    "see",
+    "know",
+    "big",
+    "small",
+    "welcome",
+    "maybe",
+    "wait",
+    "today",
+    "tomorrow",
+    "yesterday",
+    "outside",
+    "inside",
+    "night",
+    "morning",
+    "afternoon",
+    "evening",
+    "soon",
+    "always",
+    "never",
+    "sometimes",
+    "family",
+    "work",
+    "please",
+    "love",
+    "name",
+    "water",
+    "good",
+    "bye",
+    "sorry",
+    "stop",
+    "want",
+    "need",
+    "happy",
+    "sad",
+    "mom",
+    "dad",
+    "friend",
+    "food",
+    "drink",
+    "home",
+    "school",  # Ensure 'school' is included in the list
+    "go",
+    "come",
+    "see",
+    "know",
+    "big",
+    "small",
+]
+
+def gloss_to_id(gloss: str) -> int:
+    key = str(gloss).lower().strip().replace(" ", "_")
+    if key not in DEFAULT_GLOSS:
+        raise KeyError(f"Unknown gloss: {gloss}")
+    return DEFAULT_GLOSS.index(key)
+
+def id_to_gloss(idx: int) -> str:
+    if idx < 0 or idx >= len(DEFAULT_GLOSS):
+        raise IndexError("Gloss index out of range")
+    return DEFAULT_GLOSS[idx]
+```
