@@ -210,3 +210,5 @@ Star repos → claim issue → PR to **master** → MRG **25–200**.
 ## License
 
 MIT · MergeOS / ThanhTrucSolutions
+
+![CI](https://github.com/mergeos-bounties/Loru/actions/workflows/ci.yml/badge.svg)
