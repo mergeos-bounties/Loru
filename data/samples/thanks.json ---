@@ -1,0 +1,16 @@
+```json
+{
+  "gloss": "thanks",
+  "language": "demo-asl",
+  "fps": 15,
+  "source": "synthetic-unique-16g",
+  "frames": [
+    // Add unique frames for "thanks" gloss here
+  ]
+}
+```
+
+Note: You need to generate unique frames for the "thanks" gloss and add them to the `frames` array in `thanks.json`. The frames should be different from any existing gloss frames to ensure uniqueness.
+
+--- TESTS ---
+Add a test to verify the "thanks" gloss is recognized correctly:
