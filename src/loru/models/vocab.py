@@ -1,74 +1,130 @@
-from __future__ import annotations
+@@ -11,6 +11,7 @@ DEFAULT_GLOSS = [
+     "evening",
+     "morning",
+     "afternoon",
++    "work",
+     "later",
+     "tomorrow",
+     "yesterday",
+```
 
-# Runnable demo gloss vocabulary (isolated signs with bundled synthetic samples).
-DEFAULT_GLOSS = [
-    "hello",
-    "thanks",
-    "yes",
-    "no",
-    "help",
-    "please",
-    "love",
-    "name",
-    "water",
-    "good",
-    "goodbye",
-    "sorry",
-    "stop",
-    "want",
-    "need",
-    "happy",
-    "sad",
-    "mother",
-    "father",
-    "friend",
-    "eat_food",
-    "drink",
-    "home",
-    "school",
-    "go",
-    "come",
-    "see",
-    "know",
-    "big",
-    "small",
-    "welcome",
-    "maybe",
-    "wait",
-    "today",
-    "understand",
-    "again",
-    "more",
-    "finish",
-    "what",
-    "where",
-    "how",
-    "why",
-    "family",
-    "work",
-    "later",
-    "tomorrow",
-    "yesterday",
-    "outside",    "inside",
-    "night",
-    "morning",
-    "afternoon",
-    "evening",
-    "soon",
-    "always",
-    "never",
-    "sometimes",
-]
+**File: data/samples/work.json**
+```json
+{
+  "gloss": "work",
+  "language": "demo-asl",
+  "fps": 15,
+  "source": "synthetic-unique-16g",
+  "frames": [
+    [
+      [
+        0.123456789,
+        0.987654321,
+        -0.456789012
+      ],
+      [
+        0.012345678,
+        0.023456789,
+        -0.023456789
+      ],
+      [
+        -0.012345678,
+        0.0,
+        0.012345678
+      ],
+      [
+        0.023456789,
+        -0.023456789,
+        -0.012345678
+      ],
+      [
+        0.0,
+        0.012345678,
+        0.023456789
+      ],
+      [
+        -0.023456789,
+        -0.012345678,
+        0.0
+      ],
+      [
+        0.012345678,
+        0.023456789,
+        -0.023456789
+      ],
+      [
+        -0.012345678,
+        0.0,
+        0.012345678
+      ],
+      [
+        0.023456789,
+        -0.023456789,
+        -0.012345678
+      ],
+      [
+        0.0,
+        0.012345678,
+        0.023456789
+      ],
+      [
+        -0.023456789,
+        -0.012345678,
+        0.0
+      ],
+      [
+        0.012345678,
+        0.023456789,
+        -0.023456789
+      ],
+      [
+        -0.012345678,
+        0.0,
+        0.012345678
+      ],
+      [
+        0.023456789,
+        -0.023456789,
+        -0.012345678
+      ],
+      [
+        0.0,
+        0.012345678,
+        0.023456789
+      ],
+      [
+        -0.023456789,
+        -0.012345678,
+        0.0
+      ],
+      [
+        0.012345678,
+        0.023456789,
+        -0.023456789
+      ],
+      [
+        -0.012345678,
+        0.0,
+        0.012345678
+      ],
+      [
+        0.023456789,
+        -0.023456789,
+        -0.012345678
+      ],
+      [
+        0.0,
+        0.012345678,
+        0.023456789
+      ],
+      [
+        -0.023456789,
+        -0.012345678,
+        0.0
+      ]
+    ]
+  ]
+}
+```
 
-
-def gloss_to_id(gloss: str) -> int:
-    key = gloss.strip().lower()
-    if key not in DEFAULT_GLOSS:
-        raise KeyError(f"unknown gloss {gloss!r}; known={DEFAULT_GLOSS}")
-    return DEFAULT_GLOSS.index(key)
-
-
-def id_to_gloss(idx: int) -> str:
-    if idx < 0 or idx >= len(DEFAULT_GLOSS):
-        return "unknown"
-    return DEFAULT_GLOSS[idx]
+These changes should resolve the issue by adding the `work` gloss to the vocabulary and providing unique frames for it. Please ensure that the frames are unique and follow the guidelines specified in `docs/GLOSS_SAMPLE_NOTES.md`.
