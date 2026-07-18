@@ -4,8 +4,18 @@ import json
 from pathlib import Path
 
 import numpy as np
+from pydantic import BaseModel, Field, ValidationError
 
 from loru.config import SAMPLES_DIR
+
+
+class SamplePayload(BaseModel):
+    """Validated shape for a bundled sign-sequence sample."""
+
+    gloss: str = Field(min_length=1)
+    frames: list[list[list[float]]] = Field(min_length=1)
+    fps: float | None = Field(default=None, gt=0)
+    language: str = "demo-asl"
 
 
 def list_sample_files(directory: Path | None = None) -> list[Path]:
@@ -16,10 +26,15 @@ def list_sample_files(directory: Path | None = None) -> list[Path]:
 
 
 def _load_payload(path: Path) -> dict:
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    if not isinstance(payload, dict):
-        raise ValueError(f"sample must be a JSON object: {path}")
-    return payload
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as exc:
+        raise ValueError(f"sample must contain valid JSON: {path}") from exc
+
+    try:
+        return SamplePayload.model_validate(payload).model_dump(exclude_none=True)
+    except ValidationError as exc:
+        raise ValueError(f"invalid sample shape in {path}: {exc}") from exc
 
 
 def load_sequence(path: Path) -> tuple[str, np.ndarray]:
