@@ -166,6 +166,73 @@ def data_coverage() -> None:
     console.print(f"[dim]{have}/{len(DEFAULT_GLOSS)} glosses have samples[/dim]")
 
 
+@app.command("gloss-coverage")
+def gloss_coverage(
+    format: str = typer.Option(
+        "table",
+        "--format",
+        "-f",
+        help="Output format: table, json, or csv",
+    ),
+    missing_only: bool = typer.Option(
+        False,
+        "--missing-only",
+        "-m",
+        help="Show only glosses without samples",
+    ),
+) -> None:
+    """Show which DEFAULT_GLOSS entries lack samples. CLI for issue #223."""
+    from typing import List
+    import csv
+    import json
+    from io import StringIO
+    
+    files = {p.stem for p in list_sample_files()}
+    missing = []
+    present = []
+    
+    for g in DEFAULT_GLOSS:
+        if g in files:
+            present.append(g)
+        else:
+            missing.append(g)
+    
+    if format == "json":
+        output = {
+            "total_glosses": len(DEFAULT_GLOSS),
+            "with_samples": len(present),
+            "without_samples": len(missing),
+            "missing": missing,
+            "present": present,
+        }
+        console.print_json(data=output)
+    
+    elif format == "csv":
+        output = StringIO()
+        writer = csv.writer(output)
+        writer.writerow(["gloss", "has_sample"])
+        for g in DEFAULT_GLOSS:
+            writer.writerow([g, "true" if g in files else "false"])
+        console.print(output.getvalue())
+    
+    else:  # table (default)
+        table = Table(title="Gloss Coverage Heatmap")
+        table.add_column("Gloss")
+        table.add_column("Status")
+        
+        for g in DEFAULT_GLOSS:
+            status = "✓" if g in files else "✗"
+            table.add_row(g, status)
+        
+        console.print(table)
+        console.print(f"[dim]{len(present)}/{len(DEFAULT_GLOSS)} glosses have samples[/dim]")
+        
+        if missing_only and missing:
+            console.print("\n[bold yellow]Missing glosses:[/bold yellow]")
+            for g in missing:
+                console.print(f"  - {g}")
+
+
 @data_app.command("wlasl-manifest")
 def data_wlasl_manifest(
     index: Path = typer.Option(
