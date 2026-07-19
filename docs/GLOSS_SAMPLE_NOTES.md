@@ -49,7 +49,27 @@ Cycle 2026-07-15r: sometimes gloss with unique synthetic frames.
 
 Cycle 2026-07-15w: family gloss with unique synthetic frames.
 
-Cycle 2026-07-15x: friend gloss with unique synthetic frames.
+Cycle wave2: friend gloss with unique synthetic frames.
+
+Cycle wave2: help gloss with unique synthetic frames.
+
+Cycle wave2: thanks gloss with unique synthetic frames.
+
+Cycle wave2: sorry gloss with unique synthetic frames.
+
+Cycle wave2: please gloss with unique synthetic frames.
+
+Cycle wave2: family gloss with unique synthetic frames.
+
+Cycle wave2: tomorrow gloss with unique synthetic frames.
+
+Cycle wave2: yesterday gloss with unique synthetic frames.
+
+Cycle wave2: fingerspell_z gloss with unique synthetic frames.
+
+Cycle wave2: fingerspell_y gloss with unique synthetic frames.
+
+Cycle wave2: fingerspell_x gloss with unique synthetic frames.
 
 Cycle 2026-07-15y: home gloss with unique synthetic frames.
 
