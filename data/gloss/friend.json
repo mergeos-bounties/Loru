@@ -1,0 +1,56 @@
+{
+  "word": "friend",
+  "language": "ASL",
+  "frames": [
+    {
+      "id": 1,
+      "description": "Starting position — neutral space, hands at chest level",
+      "handshape": "Open palm",
+      "orientation": "Facing inward",
+      "duration_ms": 200
+    },
+    {
+      "id": 2,
+      "description": "Transition — hands move outward with slight arc",
+      "handshape": "Open palm to curved",
+      "orientation": "Facing outward",
+      "duration_ms": 300
+    },
+    {
+      "id": 3,
+      "description": "Midpoint — hands at maximum extension",
+      "handshape": "Curved fingers",
+      "orientation": "Facing forward",
+      "duration_ms": 250
+    },
+    {
+      "id": 4,
+      "description": "Return — hands move back to neutral",
+      "handshape": "Curved to open palm",
+      "orientation": "Facing inward",
+      "duration_ms": 300
+    },
+    {
+      "id": 5,
+      "description": "End position — neutral space with slight emphasis",
+      "handshape": "Open palm",
+      "orientation": "Facing forward",
+      "duration_ms": 200
+    }
+  ],
+  "vocabulary": {
+    "primary_meaning": "friend",
+    "synonyms": [
+      "friend"
+    ],
+    "usage_context": "Common social interaction sign",
+    "difficulty_level": "beginner",
+    "sign_category": "social"
+  },
+  "metadata": {
+    "source": "AI-generated gloss data",
+    "version": "1.0",
+    "frames_count": 5,
+    "total_duration_ms": 1250
+  }
+}
