@@ -48,6 +48,7 @@ TEMPLATES = {
     "where": "Where?",
     "how": "How?",
     "why": "Why?",
+    "fingerspell_z": "Z.",
 }
 
 
