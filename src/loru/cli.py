@@ -256,6 +256,53 @@ def gloss_compare(
         raise typer.Exit(code=1) from exc
 
 
+@gloss_app.command("dedupe")
+def gloss_dedupe(
+    directory: Path | None = typer.Option(
+        None,
+        "--directory",
+        "-d",
+        exists=True,
+        file_okay=False,
+        help="Custom sample directory. Defaults to data/samples.",
+    ),
+    near_threshold: float = typer.Option(
+        0.01,
+        "--near-threshold",
+        "-t",
+        help="Mean landmark distance threshold for near-duplicate flagging.",
+    ),
+    max_comparisons: int = typer.Option(
+        5000,
+        "--max-comparisons",
+        help="Max pair comparisons to run (limits combinatorial cost).",
+    ),
+    json_output: bool = typer.Option(
+        False,
+        "--json",
+        "-j",
+        help="Output raw JSON instead of rich table.",
+    ),
+) -> None:
+    """Detect exact and near-duplicate gloss frames across sample files.
+
+    Uses SHA256 hash for exact matches and frame-distance comparison for near-duplicates.
+    """
+    from loru.config import SAMPLES_DIR
+    from loru.data.dedupe import detect_duplicates, dedupe_report_table
+
+    dir_path = directory or SAMPLES_DIR
+    report = detect_duplicates(
+        dir_path,
+        near_threshold=near_threshold,
+        max_comparisons=max_comparisons,
+    )
+    if json_output:
+        console.print_json(data=report)
+    else:
+        dedupe_report_table(report)
+
+
 @samples_app.command("list")
 def samples_list(
     gloss: str | None = typer.Option(
