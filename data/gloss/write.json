@@ -1,0 +1,46 @@
+{
+  "word": "write",
+  "language": "ASL",
+  "frames": [
+    {
+      "id": 1,
+      "description": "Starting position",
+      "handshape": "Open palm",
+      "duration_ms": 200
+    },
+    {
+      "id": 2,
+      "description": "Transition outward",
+      "handshape": "Open palm to curved",
+      "duration_ms": 300
+    },
+    {
+      "id": 3,
+      "description": "Midpoint gesture",
+      "handshape": "Curved fingers",
+      "duration_ms": 250
+    },
+    {
+      "id": 4,
+      "description": "Return motion",
+      "handshape": "Curved to open palm",
+      "duration_ms": 300
+    },
+    {
+      "id": 5,
+      "description": "End position",
+      "handshape": "Open palm",
+      "duration_ms": 200
+    }
+  ],
+  "vocabulary": {
+    "primary_meaning": "write",
+    "difficulty_level": "beginner",
+    "sign_category": "social"
+  },
+  "metadata": {
+    "source": "AI-generated",
+    "version": "1.0",
+    "frames_count": 5
+  }
+}
