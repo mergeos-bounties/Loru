@@ -1,0 +1,20 @@
+﻿{
+  "gloss": "fingerspell_z",
+  "wave": 2,
+  "sign_pack": {
+    "contributor": "yh_liao",
+    "notes": "Fingerspell letter Z — index finger traces zigzag shape in air",
+    "source_language": "en",
+    "gloss": "z",
+    "vocab": [
+      { "form": "z", "pos": "letter", "gloss_en": "z", "example_en": "The letter $g in fingerspelling." }
+    ],
+    "frames": [
+      { "id": "z_frame_0", "duration_ms": 400, "pose": { "handshape": "d_point", "palm_orientation": "outward", "non_dominant": "rest", "movement": "hold", "location": "neutral_space" } },
+      { "id": "z_frame_1", "duration_ms": 400, "pose": { "handshape": "d_point", "palm_orientation": "outward", "non_dominant": "rest", "movement": "zigzag_right", "location": "neutral_space" } },
+      { "id": "z_frame_2", "duration_ms": 400, "pose": { "handshape": "d_point", "palm_orientation": "outward", "non_dominant": "rest", "movement": "zigzag_left", "location": "neutral_space" } },
+      { "id": "z_frame_3", "duration_ms": 400, "pose": { "handshape": "d_point", "palm_orientation": "outward", "non_dominant": "rest", "movement": "zigzag_right", "location": "neutral_space" } },
+      { "id": "z_frame_4", "duration_ms": 300, "pose": { "handshape": "d_point", "palm_orientation": "outward", "non_dominant": "rest", "movement": "release", "location": "neutral_space" } }
+    ]
+  }
+}
