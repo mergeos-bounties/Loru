@@ -1,0 +1,18 @@
+﻿{
+  "gloss": "fingerspell_y",
+  "wave": 2,
+  "sign_pack": {
+    "contributor": "yh_liao",
+    "notes": "Fingerspell letter Y — thumb and pinky extended, other fingers folded",
+    "source_language": "en",
+    "gloss": "y",
+    "vocab": [
+      { "form": "y", "pos": "letter", "gloss_en": "y", "example_en": "The letter $g in fingerspelling." }
+    ],
+    "frames": [
+      { "id": "y_frame_0", "duration_ms": 400, "pose": { "handshape": "i_love_you", "palm_orientation": "outward", "non_dominant": "rest", "movement": "hold", "location": "neutral_space" } },
+      { "id": "y_frame_1", "duration_ms": 400, "pose": { "handshape": "i_love_you", "palm_orientation": "outward", "non_dominant": "rest", "movement": "wiggle", "location": "neutral_space" } },
+      { "id": "y_frame_2", "duration_ms": 300, "pose": { "handshape": "i_love_you", "palm_orientation": "outward", "non_dominant": "rest", "movement": "release", "location": "neutral_space" } }
+    ]
+  }
+}
