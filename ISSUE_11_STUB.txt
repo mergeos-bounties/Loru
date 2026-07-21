@@ -1,0 +1,1 @@
+Placeholder for issue #11: [50 MRG] Gloss→sentence: template pack + simple NLG for multi-gloss\nImplementation needed.\n

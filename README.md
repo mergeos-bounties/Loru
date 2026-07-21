@@ -198,15 +198,20 @@ ruff check src tests
 loru demo
 python scripts/capture_gui_shots.py   # refresh GUI screenshots
 ```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 
----
-
+--
 ## MergeOS bounties
+****
 
 High demand: **sign packs** (gloss + evidence photo/video + consent).  
 Star repos → claim issue → PR to **master** → MRG **25–200**.
 
 ---
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
 
 ## License
 
