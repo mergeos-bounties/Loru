@@ -1,0 +1,52 @@
+{
+  "word": "U",
+  "type": "fingerspelling",
+  "language": "ASL",
+  "frames": [
+    {
+      "id": 1,
+      "description": "Handshape for letter U",
+      "handshape": "Letter U configuration",
+      "orientation": "Facing viewer",
+      "duration_ms": 150
+    },
+    {
+      "id": 2,
+      "description": "Hold position",
+      "handshape": "Letter U hold",
+      "orientation": "Facing viewer",
+      "duration_ms": 200
+    },
+    {
+      "id": 3,
+      "description": "Minimal adjustment for clarity",
+      "handshape": "Letter U adjusted",
+      "orientation": "Facing viewer",
+      "duration_ms": 100
+    },
+    {
+      "id": 4,
+      "description": "Return to neutral",
+      "handshape": "Open palm",
+      "orientation": "Neutral",
+      "duration_ms": 150
+    },
+    {
+      "id": 5,
+      "description": "Rest position",
+      "handshape": "Relaxed",
+      "orientation": "Neutral",
+      "duration_ms": 100
+    }
+  ],
+  "vocabulary": {
+    "letter": "U",
+    "category": "fingerspelling",
+    "difficulty_level": "beginner"
+  },
+  "metadata": {
+    "source": "AI-generated",
+    "version": "1.0",
+    "frames_count": 5
+  }
+}
