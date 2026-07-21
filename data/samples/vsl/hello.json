@@ -1,0 +1,21 @@
+{
+  "gloss": "xin_chao",
+  "fps": 30,
+  "source": "vsl_pilot",
+  "frames": [
+    {
+      "frame_idx": 0,
+      "landmarks": {
+        "left_hand": [[0.5, 0.5, 0.0], [0.51, 0.51, 0.0]],
+        "right_hand": [[0.5, 0.5, 0.0], [0.51, 0.51, 0.0]]
+      }
+    },
+    {
+      "frame_idx": 1,
+      "landmarks": {
+        "left_hand": [[0.52, 0.52, 0.0], [0.53, 0.53, 0.0]],
+        "right_hand": [[0.52, 0.52, 0.0], [0.53, 0.53, 0.0]]
+      }
+    }
+  ]
+}
