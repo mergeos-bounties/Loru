@@ -1,0 +1,36 @@
+{
+  "word": "stop",
+  "type": "gloss",
+  "frames": [
+    {
+      "id": 1,
+      "description": "Start position",
+      "duration_ms": 200
+    },
+    {
+      "id": 2,
+      "description": "Transition",
+      "duration_ms": 300
+    },
+    {
+      "id": 3,
+      "description": "Midpoint",
+      "duration_ms": 250
+    },
+    {
+      "id": 4,
+      "description": "Return",
+      "duration_ms": 300
+    },
+    {
+      "id": 5,
+      "description": "End",
+      "duration_ms": 200
+    }
+  ],
+  "metadata": {
+    "source": "AI-generated",
+    "version": "1.0",
+    "frames_count": 5
+  }
+}
