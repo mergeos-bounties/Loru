@@ -256,6 +256,65 @@ def gloss_compare(
         raise typer.Exit(code=1) from exc
 
 
+@gloss_app.command("find-duplicates")
+def gloss_find_duplicates(
+    directory: Path | None = typer.Option(
+        None,
+        "--directory",
+        "-d",
+        exists=True,
+        file_okay=False,
+        help="Custom samples directory. Defaults to data/samples.",
+    ),
+    threshold: float = typer.Option(
+        0.001,
+        "--threshold",
+        "-t",
+        help="Mean landmark distance below which two same-gloss samples are flagged as near-duplicates.",
+    ),
+    report: bool = typer.Option(False, "--report", "-r", help="Output full report (JSON list)."),
+) -> None:
+    """Scan samples directory for near-duplicate gloss pairs.
+
+    Fails (exit code 1) if any same-gloss pair shares near-identical frame sequences.
+    Designed for use in CI or pre-commit hooks.
+    """
+    from loru.config import SAMPLES_DIR
+    from loru.data.duplicate import find_near_duplicates
+
+    scan_dir = directory or SAMPLES_DIR
+    duplicates = find_near_duplicates(scan_dir, distance_threshold=threshold)
+
+    if not duplicates:
+        console.print(f"[green]No near-duplicates found in {scan_dir}[/green]")
+        return
+
+    # Print summary table
+    table = Table(title=f"Near-duplicate pairs ({len(duplicates)})")
+    table.add_column("Gloss")
+    table.add_column("File A")
+    table.add_column("File B")
+    table.add_column("Mean Dist")
+    table.add_column("Max Dist")
+    table.add_column("Frames Δ")
+    for dup in duplicates:
+        table.add_row(
+            dup.gloss,
+            dup.file_a.name,
+            dup.file_b.name,
+            f"{dup.mean_distance:.6f}",
+            f"{dup.max_distance:.6f}",
+            str(dup.frame_delta),
+        )
+    console.print(table)
+    console.print(f"[red]Found {len(duplicates)} near-duplicate pair(s) — CI should fail[/red]")
+
+    if report:
+        console.print_json(data=[dup.as_dict() for dup in duplicates])
+
+    raise typer.Exit(code=1)
+
+
 @samples_app.command("list")
 def samples_list(
     gloss: str | None = typer.Option(
