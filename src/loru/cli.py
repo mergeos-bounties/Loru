@@ -256,6 +256,73 @@ def gloss_compare(
         raise typer.Exit(code=1) from exc
 
 
+
+@gloss_app.command("coverage")
+def gloss_coverage(
+    directory: str | None = typer.Option(None, "--dir", help="Override samples directory"),
+    show_missing: bool = typer.Option(False, "--missing", "-m", help="Only show missing glosses"),
+) -> None:
+    """Show which DEFAULT_GLOSS entries have (or lack) landmark samples."""
+    from pathlib import Path
+    import json as _json
+
+    samples_dir = Path(directory) if directory else SAMPLES_DIR
+
+    # Recursive scan \u2014 includes subdirectories like asl/, vsl/, etc.
+    json_files = list(samples_dir.rglob("*.json"))
+
+    # Build: gloss_name -> list of relative paths
+    covered: dict[str, list[str]] = {}
+    for f in sorted(json_files):
+        try:
+            payload = _json.loads(f.read_text(encoding="utf-8"))
+        except (_json.JSONDecodeError, OSError):
+            continue
+        g = str(payload.get("gloss", "")).strip().lower() or f.stem.lower()
+        covered.setdefault(g, []).append(str(f.relative_to(samples_dir)))
+
+    table = Table(title="Gloss Coverage Heatmap")
+    table.add_column("Gloss", style="cyan")
+    table.add_column("Status", style="bold")
+    table.add_column("Samples", style="green")
+
+    covered_count = 0
+    missing: list[str] = []
+
+    for gloss in DEFAULT_GLOSS:
+        files = covered.get(gloss.strip().lower(), [])
+        if files:
+            covered_count += 1
+            if show_missing:
+                continue
+            status = "[bold green]COVERED[/bold green]"
+            samples = ", ".join(files[:3])
+            if len(files) > 3:
+                samples += f" (+{len(files) - 3})"
+        else:
+            missing.append(gloss)
+            status = "[bold red]MISSING[/bold red]"
+            samples = "\u2014"
+
+        if not show_missing:
+            table.add_row(gloss, status, samples)
+
+    if show_missing:
+        if not missing:
+            console.print("[green]All glosses covered![/green]")
+        else:
+            console.print(f"\n[bold red]{len(missing)} missing glosses:[/bold red]")
+            for m in missing:
+                console.print(f"  \u2022 {m}")
+    else:
+        console.print(table)
+
+    total = len(DEFAULT_GLOSS)
+    pct = covered_count / total * 100 if total else 0
+    color = "green" if pct == 100 else ("yellow" if pct >= 50 else "red")
+    console.print(f"\n[{color}]{covered_count}/{total} covered ({pct:.1f}%)\\[/{color}]")
+
+    raise typer.Exit(0 if pct == 100 else 1)
 @samples_app.command("list")
 def samples_list(
     gloss: str | None = typer.Option(
