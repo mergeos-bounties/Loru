@@ -198,15 +198,22 @@ ruff check src tests
 loru demo
 python scripts/capture_gui_shots.py   # refresh GUI screenshots
 ```
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 
----
-
+--
 ## MergeOS bounties
+
+Current bounty: [Accessibility docs: how deaf/hard-of-hearing users benefit + safety](https://github.com/mergeos-bounties/Loru/issues/22) (50 MRG)
+****
 
 High demand: **sign packs** (gloss + evidence photo/video + consent).  
 Star repos → claim issue → PR to **master** → MRG **25–200**.
 
 ---
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed contribution guidelines.
 
 ## License
 
