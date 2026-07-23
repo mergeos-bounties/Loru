@@ -1,0 +1,40 @@
+{
+  "word": "brother",
+  "type": "gloss",
+  "language": "ASL",
+  "frames": [
+    {
+      "id": 1,
+      "description": "Neutral start position",
+      "duration_ms": 200
+    },
+    {
+      "id": 2,
+      "description": "Transition into brother",
+      "duration_ms": 300
+    },
+    {
+      "id": 3,
+      "description": "Hold at peak",
+      "duration_ms": 250
+    },
+    {
+      "id": 4,
+      "description": "Transition out",
+      "duration_ms": 300
+    },
+    {
+      "id": 5,
+      "description": "Return to neutral",
+      "duration_ms": 200
+    }
+  ],
+  "vocabulary": {
+    "meaning": "brother",
+    "level": "beginner"
+  },
+  "notes": {
+    "total_frames": 5,
+    "total_duration_ms": 1250
+  }
+}
