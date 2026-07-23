@@ -1,0 +1,42 @@
+{
+  "word": "eyebrows_furrowed_wh",
+  "type": "body_gesture",
+  "language": "ASL",
+  "frames": [
+    {
+      "id": 1,
+      "description": "Start neutral position",
+      "duration_ms": 200
+    },
+    {
+      "id": 2,
+      "description": "Begin eyebrows_furrowed_wh gesture",
+      "duration_ms": 300
+    },
+    {
+      "id": 3,
+      "description": "Peak of eyebrows_furrowed_wh gesture",
+      "duration_ms": 250
+    },
+    {
+      "id": 4,
+      "description": "Release from gesture",
+      "duration_ms": 300
+    },
+    {
+      "id": 5,
+      "description": "Return to neutral",
+      "duration_ms": 200
+    }
+  ],
+  "vocabulary": {
+    "primary_meaning": "eyebrows_furrowed_wh",
+    "difficulty_level": "intermediate",
+    "sign_category": "body"
+  },
+  "metadata": {
+    "source": "AI-generated",
+    "version": "1.0",
+    "frames_count": 5
+  }
+}
