@@ -1,0 +1,42 @@
+{
+  "word": "point_locus_left",
+  "type": "body_gesture",
+  "language": "ASL",
+  "frames": [
+    {
+      "id": 1,
+      "description": "Start neutral position",
+      "duration_ms": 200
+    },
+    {
+      "id": 2,
+      "description": "Begin point_locus_left gesture",
+      "duration_ms": 300
+    },
+    {
+      "id": 3,
+      "description": "Peak of point_locus_left gesture",
+      "duration_ms": 250
+    },
+    {
+      "id": 4,
+      "description": "Release from gesture",
+      "duration_ms": 300
+    },
+    {
+      "id": 5,
+      "description": "Return to neutral",
+      "duration_ms": 200
+    }
+  ],
+  "vocabulary": {
+    "primary_meaning": "point_locus_left",
+    "difficulty_level": "intermediate",
+    "sign_category": "body"
+  },
+  "metadata": {
+    "source": "AI-generated",
+    "version": "1.0",
+    "frames_count": 5
+  }
+}
