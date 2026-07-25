@@ -64,6 +64,35 @@ def infer_text(body: SequenceBody) -> dict:
         return sign_to_text(path)
 
 
+@app.post("/infer/voice")
+def infer_voice(body: SequenceBody) -> dict:
+    """Sign→voice: accept sequence frames, return audio path."""
+    if not body.frames:
+        raise HTTPException(400, "frames required")
+    from loru.infer.pipeline import sign_to_voice
+
+    with TemporaryDirectory() as tmp:
+        path = Path(tmp) / "seq.json"
+        import json
+
+        path.write_text(
+            json.dumps(
+                {
+                    "gloss": body.gloss or "unknown",
+                    "language": body.language,
+                    "frames": body.frames,
+                }
+            ),
+            encoding="utf-8",
+        )
+        wav_path = Path(tmp) / "output.wav"
+        result = sign_to_voice(path, wav_path)
+        return {
+            **result,
+            "audio_path": result["audio_path"],
+        }
+
+
 @app.post("/infer/sentence")
 def infer_sentence(body: GlossBody) -> dict:
     return {
