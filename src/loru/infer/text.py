@@ -74,6 +74,7 @@ TEMPLATES = {
     "fingerspell_c": "C.",
     "fingerspell_b": "B.",
     "fingerspell_a": "A.",
+    "vsl_no": "No.",
 }
 
 
