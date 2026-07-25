@@ -129,6 +129,45 @@ loru-gui
 
 ---
 
+## TTS backends
+
+Loru ships with three TTS backends for the **sign → voice** pipeline. The
+`get_default_tts()` function selects the best available engine at runtime.
+
+| Backend | Quality | Requires | Env var |
+| --- | --- | --- | --- |
+| **EdgeTTS** (online) | Natural, multi-voice | `pip install loru[voice]` | `LORU_TTS=edge` |
+| **Pyttsx3TTS** (native) | OS-dependent | `pip install loru[voice]` | `LORU_TTS=pyttsx3` |
+| **OfflineStubTTS** (fallback) | Audible tone | None (always available) | `LORU_TTS=stub` |
+
+### Behaviour
+
+- **`LORU_TTS=auto`** (default) — tries `EdgeTTS` first, then `Pyttsx3TTS`, then `OfflineStubTTS`.
+- **`LORU_TTS=edge`** — forces `EdgeTTS`; raises if `edge-tts` is not installed.
+- **`LORU_TTS=pyttsx3`** — forces `Pyttsx3TTS`; raises if `pyttsx3` is not installed.
+- **`LORU_TTS=stub`** — always uses the offline tone generator.
+
+Install voice dependencies:
+
+```powershell
+pip install -e ".[voice]"
+```
+
+The `EdgeTTS` backend uses Microsoft Edge's free online TTS service (no API key
+required). You can select a voice with the `LORU_TTS_VOICE` environment variable:
+
+```powershell
+set LORU_TTS_VOICE=en-US-JennyNeural   # default, natural female
+set LORU_TTS_VOICE=en-US-GuyNeural     # natural male
+set LORU_TTS_VOICE=zh-CN-XiaoxiaoNeural  # Chinese female
+```
+
+> **CI note**: Voice dependencies are **not** installed in CI (`pip install -e ".[dev]"`), so
+> tests always run against `OfflineStubTTS`. This keeps the test suite fast and
+> hermetic.
+
+---
+
 ## Data & pipeline
 
 ```text

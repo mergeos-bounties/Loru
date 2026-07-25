@@ -36,6 +36,7 @@ api = [
 ]
 voice = [
   "pyttsx3>=2.90",
+  "edge-tts>=7.0",
 ]
 
 [project.scripts]
