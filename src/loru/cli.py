@@ -153,6 +153,57 @@ def data_sentence(
     )
 
 
+
+@data_app.command("near-dup")
+def data_near_dup(
+    directory: Optional[str] = typer.Option(
+        None,
+        "--directory",
+        "-d",
+        exists=True,
+        file_okay=False,
+        help="Samples directory. Defaults to bundled data/samples.",
+    ),
+    threshold: float = typer.Option(
+        1e-6,
+        "--threshold",
+        help="Max mean landmark distance to count a pair as near-duplicate.",
+    ),
+    out: Optional[Path] = typer.Option(
+        None,
+        "--out",
+        "-o",
+        help="Optional JSON report path.",
+    ),
+) -> None:
+    """Detect near-duplicate gloss frame sequences in a sample directory."""
+    from loru.config import SAMPLES_DIR
+    from loru.data.near_dup import write_report
+
+    dir_path = Path(directory) if directory else SAMPLES_DIR
+    report = write_report(directory=dir_path, out=out, threshold=threshold)
+    if report["near_duplicate_pairs"] == 0:
+        console.print("[green]No near-duplicate gloss sequences found.[/green]")
+        return
+    console.print(f"[red]Found {report['near_duplicate_pairs']} near-duplicate pair(s)[/red]")
+    table = Table(title="Near-duplicate gloss pairs")
+    table.add_column("A (gloss)")
+    table.add_column("B (gloss)")
+    table.add_column("Frames")
+    table.add_column("Mean dist")
+    table.add_column("Max dist")
+    for pair in report["pairs"]:
+        table.add_row(
+            f"{Path(pair['a']['path']).name} ({pair['a']['gloss']})",
+            f"{Path(pair['b']['path']).name} ({pair['b']['gloss']})",
+            str(pair["compared_frames"]),
+            str(pair["mean_landmark_distance"]),
+            str(pair["max_landmark_distance"]),
+        )
+    console.print(table)
+    if out:
+        console.print(f"[green]Report[/green] → {out}")
+
 @data_app.command("coverage")
 def data_coverage() -> None:
     """Which DEFAULT_GLOSS entries have bundled sample JSON."""
