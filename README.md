@@ -23,6 +23,7 @@
 - [Diagrams](#diagrams)
 - [Repository layout](#repository-layout)
 - [Development](#development)
+- [Contributing](#contributing)
 - [MergeOS bounties](#mergeos-bounties)
 - [License](#license)
 
@@ -198,6 +199,11 @@ ruff check src tests
 loru demo
 python scripts/capture_gui_shots.py   # refresh GUI screenshots
 ```
+
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, test commands, the pull
+request checklist, and the MergeOS bounty claim flow.
 
 ---
 
