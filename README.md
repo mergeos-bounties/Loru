@@ -192,6 +192,8 @@ docs/diagrams/
 
 ## Development
 
+See [CONTRIBUTING.md](CONTRIBUTING.md) for full setup, test commands, and the PR checklist.
+
 ```powershell
 pytest -q
 ruff check src tests
