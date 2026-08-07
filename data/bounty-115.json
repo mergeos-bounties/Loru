@@ -1,0 +1,40 @@
+{
+  "word": "play",
+  "type": "gloss:action",
+  "category": "action",
+  "frames": [
+    {
+      "id": 1,
+      "description": "Start position – hands at rest",
+      "duration_ms": 200
+    },
+    {
+      "id": 2,
+      "description": "Transition – movement begins",
+      "duration_ms": 250
+    },
+    {
+      "id": 3,
+      "description": "Midpoint – peak of the sign",
+      "duration_ms": 300
+    },
+    {
+      "id": 4,
+      "description": "Return – movement back toward rest",
+      "duration_ms": 350
+    },
+    {
+      "id": 5,
+      "description": "End – final position held",
+      "duration_ms": 400
+    }
+  ],
+  "metadata": {
+    "source": "AI-generated gloss frame (bounty)",
+    "version": "1.0",
+    "frames_count": 5,
+    "bounty_issue": 115,
+    "photo_placeholder": "data/signs/play.png",
+    "video_placeholder": "data/signs/play.mp4"
+  }
+}
