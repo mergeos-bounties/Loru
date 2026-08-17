@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from loru.eval.metrics import top_k_accuracy, confusion_matrix, evaluate_samples, generate_report
+from loru.eval.metrics import confusion_matrix, evaluate_samples, generate_report, top_k_accuracy
 
 
 def test_top_k_accuracy_perfect():

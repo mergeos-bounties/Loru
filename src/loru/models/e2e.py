@@ -1,6 +1,7 @@
 import argparse
 import time
 
+
 def extract_landmarks(video_path):
     print(f"Extracting landmarks from {video_path}...")
     time.sleep(1)

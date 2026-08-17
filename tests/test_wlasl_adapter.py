@@ -8,7 +8,6 @@ from typer.testing import CliRunner
 from loru.cli import app
 from loru.data.wlasl import load_wlasl_manifest, write_wlasl_manifest
 
-
 FIXTURES = Path(__file__).parent / "fixtures"
 
 

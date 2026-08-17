@@ -5,7 +5,7 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from PySide6.QtCore import Qt, QSize, QThread, Signal
+from PySide6.QtCore import QSize, Qt, QThread, Signal
 from PySide6.QtWidgets import (
     QComboBox,
     QFormLayout,
@@ -82,7 +82,7 @@ class TrainWorker(QThread):
         try:
             report = train_toy(epochs=self.epochs)
             self.finished_ok.emit(report)
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             self.failed.emit(str(exc))
 
 
@@ -217,7 +217,7 @@ class MainWindow(QMainWindow):
             self._append_demo("Demo complete — offline sign→text→voice works.")
             self._status("Demo complete")
             self.refresh_samples()
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             self._append_demo(f"Error: {exc}")
             QMessageBox.warning(self, "Loru", str(exc))
         finally:
@@ -331,7 +331,7 @@ class MainWindow(QMainWindow):
                 r = sign_to_voice(path, out)
                 self.infer_out.setPlainText(json.dumps(r, indent=2, ensure_ascii=False))
                 self._status(f"Voice: {r.get('audio_path')}")
-        except Exception as exc:  # noqa: BLE001
+        except Exception as exc:
             self.infer_out.setPlainText(f"Error: {exc}")
 
     # ----- Train -----

@@ -1,7 +1,9 @@
-import os
-import yaml
-import random
 import argparse
+import os
+import random
+
+import yaml
+
 
 def set_seed(seed):
     random.seed(seed)

@@ -19,7 +19,7 @@ class ToySignClassifier:
         self.prototypes = prototypes or {}
 
     @classmethod
-    def from_samples(cls, sample_paths: list[Path]) -> "ToySignClassifier":
+    def from_samples(cls, sample_paths: list[Path]) -> ToySignClassifier:
         buckets: dict[str, list[np.ndarray]] = {}
         for path in sample_paths:
             payload = json.loads(path.read_text(encoding="utf-8"))

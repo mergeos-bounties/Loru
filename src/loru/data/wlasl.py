@@ -4,7 +4,6 @@ import json
 from pathlib import Path
 from typing import Any
 
-
 SEQUENCE_PATH_KEYS = ("sequence_path", "loru_sequence", "sample_path")
 SOURCE_URL_KEYS = ("url", "source_url", "video_url")
 METADATA_KEYS = ("bbox", "fps", "signer_id", "source", "variation_id")

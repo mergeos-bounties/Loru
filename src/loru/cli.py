@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Optional
 
 import typer
 from rich.console import Console
@@ -11,7 +10,13 @@ from rich.table import Table
 from loru import __version__
 from loru.config import OUT_DIR, RUNS_DIR, SAMPLES_DIR
 from loru.data.loader import list_sample_files, sequence_summary
-from loru.data.stats import compute_sequence_stats, detect_outliers, print_stats_table, print_outliers_table, print_summary
+from loru.data.stats import (
+    compute_sequence_stats,
+    detect_outliers,
+    print_outliers_table,
+    print_stats_table,
+    print_summary,
+)
 from loru.data.wlasl import load_wlasl_manifest, write_wlasl_manifest
 from loru.infer.pipeline import sign_to_voice
 from loru.infer.text import gloss_to_sentence, multi_gloss_to_sentence, sign_to_text
@@ -50,7 +55,7 @@ def version_cmd() -> None:
 def stats_cmd(
     method: str = typer.Option("iqr", help="Outlier detection method (iqr or zscore)"),
     threshold: float = typer.Option(1.5, help="Outlier threshold"),
-    directory: Optional[str] = typer.Option(None, help="Custom samples directory"),
+    directory: str | None = typer.Option(None, help="Custom samples directory"),
 ) -> None:
     """Report frame counts per sample and flag outliers."""
     from loru.config import SAMPLES_DIR
@@ -168,6 +173,63 @@ def data_coverage() -> None:
         table.add_row(g, "yes" if ok else "no")
     console.print(table)
     console.print(f"[dim]{have}/{len(DEFAULT_GLOSS)} glosses have samples[/dim]")
+
+
+@data_app.command("heatmap")
+def data_heatmap() -> None:
+    """Show a compact heatmap grid of which DEFAULT_GLOSS entries lack samples."""
+    from rich.text import Text
+
+    files = {p.stem for p in list_sample_files()}
+    console.print("[bold]Gloss Coverage Heatmap[/bold]")
+    
+    row = Text()
+    missing = []
+    
+    for i, g in enumerate(DEFAULT_GLOSS):
+        if g in files:
+            row.append("■ ", style="green")
+        else:
+            row.append("□ ", style="red")
+            missing.append(g)
+            
+        if (i + 1) % 20 == 0 or i == len(DEFAULT_GLOSS) - 1:
+            console.print(row)
+            row = Text()
+            
+    console.print(f"\n[dim]{len(DEFAULT_GLOSS) - len(missing)}/{len(DEFAULT_GLOSS)} glosses have samples[/dim]")
+    if missing:
+        console.print("[bold red]Missing glosses:[/bold red]")
+        console.print(", ".join(missing))
+
+
+@data_app.command("duplicates")
+def data_duplicates(
+    min_length: int = typer.Option(5, "--min-length", "-l"),
+    decimals: int = typer.Option(4, "--decimals", "-d")
+) -> None:
+    """Report near-duplicate frame sequences across samples."""
+    from loru.data.duplicates import detect_duplicates
+    
+    dups = detect_duplicates(min_sequence_length=min_length, decimals=decimals)
+    if not dups:
+        console.print("[green]No near-duplicate frame sequences found.[/green]")
+        return
+        
+    table = Table(title="Duplicate Sequences")
+    table.add_column("File A")
+    table.add_column("File B")
+    table.add_column("Offset A")
+    table.add_column("Offset B")
+    table.add_column("Length")
+    
+    for d in dups:
+        table.add_row(
+            d["file_a"], d["file_b"], str(d["offset_a"]), str(d["offset_b"]), str(d["length"])
+        )
+    console.print(table)
+    raise typer.Exit(1)
+
 
 
 @data_app.command("wlasl-manifest")

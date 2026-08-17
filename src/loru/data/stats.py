@@ -1,20 +1,18 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Optional
 
 import numpy as np
+from rich import box
 from rich.console import Console
 from rich.table import Table
-from rich import box
 
 from loru.data.loader import list_sample_files, load_sequence
-
 
 console = Console()
 
 
-def compute_sequence_stats(directory: Optional[Path] = None) -> list[dict]:
+def compute_sequence_stats(directory: Path | None = None) -> list[dict]:
     """Compute frame count statistics for all sequences."""
     files = list_sample_files(directory)
     stats = []

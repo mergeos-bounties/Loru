@@ -1,6 +1,7 @@
+from pathlib import Path
+
 from loru.infer.stream import stream_glosses
 from loru.voice.tts import OfflineStubTTS, get_default_tts
-from pathlib import Path
 
 
 def test_stream_glosses() -> None:

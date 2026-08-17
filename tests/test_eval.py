@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from loru.infer.text import multi_gloss_to_sentence, sign_to_text
 from loru.data.loader import list_sample_files
 from loru.infer.pipeline import sign_to_voice
+from loru.infer.text import multi_gloss_to_sentence, sign_to_text
 
 
 def test_multi_gloss() -> None:

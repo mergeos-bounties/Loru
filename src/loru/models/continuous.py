@@ -1,5 +1,6 @@
 import collections
 
+
 class SlidingWindowRecognizer:
     def __init__(self, window_size=30, debounce_frames=5, confidence_threshold=0.7):
         self.window_size = window_size
