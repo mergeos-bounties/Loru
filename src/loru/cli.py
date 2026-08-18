@@ -256,6 +256,53 @@ def gloss_compare(
         raise typer.Exit(code=1) from exc
 
 
+@gloss_app.command("dup-scan")
+def gloss_dup_scan(
+    directory: Path | None = typer.Option(
+        None,
+        "--directory",
+        "-d",
+        exists=True,
+        file_okay=False,
+        help="Samples directory to scan (defaults to data/samples).",
+    ),
+    eps: float = typer.Option(1e-3, "--eps", help="Near-duplicate landmark distance threshold."),
+    no_fail: bool = typer.Option(
+        False,
+        "--no-fail",
+        help="Report duplicates but exit 0 (CI must keep the default failing exit).",
+    ),
+) -> None:
+    """Scan gloss files for exact/near-duplicate frame sequences; exit 1 on findings."""
+    from loru.data.duplicates import scan_duplicates
+
+    target = directory or SAMPLES_DIR
+    report = scan_duplicates(target, eps=eps)
+
+    exact = report["exact_clone_groups"]
+    near = report["near_clone_pairs"]
+    console.print(
+        f"[cyan]scanned[/cyan] {report['files_scanned']} file(s) in {report['directory']}"
+    )
+    for group in exact:
+        console.print(f"[red]exact clone[/red] sha256={group['sha256'][:12]} ({len(group['files'])} files)")
+        for path in group["files"]:
+            console.print(f"  [dim]{path}[/dim]")
+    for pair in near:
+        console.print(
+            f"[yellow]near clone[/yellow] {pair['a']} <-> {pair['b']} "
+            f"mean={pair['mean_landmark_distance']} "
+            f"frames={pair['frames_a']} vs {pair['frames_b']}"
+        )
+
+    if exact or near:
+        console.print(f"[bold red]{report['duplicate_count']} duplicate frame sequence(s) found[/bold red]")
+        if no_fail:
+            return
+        raise typer.Exit(code=1)
+    console.print("[green]no duplicate frame sequences[/green]")
+
+
 @samples_app.command("list")
 def samples_list(
     gloss: str | None = typer.Option(

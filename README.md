@@ -115,6 +115,8 @@ Demo writes audio under the configured output directory (e.g. `demo_hello.wav`).
 | `loru demo` | Train smoke + infer text + voice on `hello` |
 | `loru gui` / `loru-gui` | **Qt desktop app** (needs `.[gui]`) |
 | `loru data list` | Landmark sample files |
+| `loru gloss compare …` | Pair-wise frame/landmark distance |
+| `loru gloss dup-scan` | Detect exact/near-duplicate frame sequences (exit 1 on findings) |
 | `loru samples list [--gloss TEXT]` | Sample catalog with language and frame counts |
 | `loru infer demo -s hello` | Gloss → sentence |
 | `loru infer text …` | Sign file → text |
