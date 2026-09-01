@@ -22,6 +22,7 @@
 - [Data & pipeline](#data--pipeline)
 - [Diagrams](#diagrams)
 - [Repository layout](#repository-layout)
+- [Contributing](#contributing)
 - [Development](#development)
 - [MergeOS bounties](#mergeos-bounties)
 - [License](#license)
@@ -202,6 +203,11 @@ python scripts/capture_gui_shots.py   # refresh GUI screenshots
 ---
 
 ## MergeOS bounties
+
+## Contributing
+
+We welcome PRs, issue reports, and new sign packs. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for setup, test commands, the PR checklist, and the MergeOS bounty claim flow.
+
 
 High demand: **sign packs** (gloss + evidence photo/video + consent).  
 Star repos → claim issue → PR to **master** → MRG **25–200**.
