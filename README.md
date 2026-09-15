@@ -213,3 +213,8 @@ Star repos → claim issue → PR to **master** → MRG **25–200**.
 MIT · MergeOS / ThanhTrucSolutions
 
 ![CI](https://github.com/mergeos-bounties/Loru/actions/workflows/ci.yml/badge.svg)
+
+
+## Contributing
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for details on our code of conduct, and the process for submitting pull requests to us.
