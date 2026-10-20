@@ -42,3 +42,63 @@ def compare_gloss_samples(sample_a: Path, sample_b: Path) -> dict:
         "max_landmark_distance": round(max_distance, 6),
         "possible_clone": gloss_a == gloss_b and mean_distance < 0.001,
     }
+
+
+def detect_near_duplicates(
+    directory: Path | None = None,
+    distance_threshold: float = 0.001,
+    min_frames: int = 1,
+) -> list[dict]:
+    """
+    Detect near-duplicate gloss samples in a directory.
+    
+    Returns list of duplicate pairs with distance metrics.
+    Each pair: {a, b, mean_distance, max_distance, possible_clone}
+    """
+    from loru.data.loader import list_sample_files, load_sequence
+    
+    files = list_sample_files(directory)
+    if len(files) < 2:
+        return []
+    
+    # Load all sequences
+    sequences = []
+    for path in files:
+        try:
+            gloss, frames = load_sequence(path)
+            if frames.shape[0] >= min_frames:
+                sequences.append({
+                    "path": path,
+                    "gloss": gloss,
+                    "frames": frames,
+                    "frame_count": frames.shape[0],
+                })
+        except Exception:
+            continue
+    
+    duplicates = []
+    n = len(sequences)
+    for i in range(n):
+        for j in range(i + 1, n):
+            seq_a = sequences[i]
+            seq_b = sequences[j]
+            
+            # Skip if frame counts differ too much (different lengths)
+            if abs(seq_a["frame_count"] - seq_b["frame_count"]) > max(seq_a["frame_count"], seq_b["frame_count"]) * 0.3:
+                continue
+            
+            # Compare using existing compare function
+            try:
+                result = compare_gloss_samples(seq_a["path"], seq_b["path"])
+                if result["possible_clone"] or result["mean_landmark_distance"] < distance_threshold:
+                    duplicates.append({
+                        "a": {"path": str(seq_a["path"]), "gloss": seq_a["gloss"], "frames": seq_a["frame_count"]},
+                        "b": {"path": str(seq_b["path"]), "gloss": seq_b["gloss"], "frames": seq_b["frame_count"]},
+                        "mean_distance": result["mean_landmark_distance"],
+                        "max_distance": result["max_landmark_distance"],
+                        "possible_clone": result["possible_clone"],
+                    })
+            except Exception:
+                continue
+    
+    return duplicates

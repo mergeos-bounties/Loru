@@ -170,6 +170,90 @@ def data_coverage() -> None:
     console.print(f"[dim]{have}/{len(DEFAULT_GLOSS)} glosses have samples[/dim]")
 
 
+@data_app.command("coverage-heatmap")
+def data_coverage_heatmap(
+    directory: Path | None = typer.Option(
+        None,
+        "--directory",
+        "-d",
+        exists=True,
+        file_okay=False,
+        help="Custom sample directory. Defaults to data/samples.",
+    ),
+    json_output: bool = typer.Option(False, "--json", help="Output as JSON"),
+) -> None:
+    """Show which DEFAULT_GLOSS entries have samples — heatmap style.
+    
+    Displays a visual heatmap of gloss coverage by language/category.
+    Shows missing glosses prominently for dataset curation.
+    """
+    from loru.config import SAMPLES_DIR
+    from loru.models.vocab import DEFAULT_GLOSS
+    
+    dir_path = directory or SAMPLES_DIR
+    if not dir_path.exists():
+        console.print(f"[red]Directory not found: {directory}[/red]")
+        raise typer.Exit(code=1)
+    
+    files = {p.stem for p in list_sample_files(directory)}
+    
+    # Group glosses by category (first letter or known groups)
+    gloss_groups = {}
+    for g in DEFAULT_GLOSS:
+        # Simple grouping: first letter
+        group = g[0].upper() if g else "?"
+        if group not in gloss_groups:
+            gloss_groups[group] = []
+        gloss_groups[group].append(g)
+    
+    if json_output:
+        report = {
+            "total_glosses": len(DEFAULT_GLOSS),
+            "have_samples": sum(1 for g in DEFAULT_GLOSS if g in files),
+            "missing": [g for g in DEFAULT_GLOSS if g not in files],
+            "by_group": {
+                group: {"have": sum(1 for g in glosses if g in files), "total": len(glosses)}
+                for group, glosses in gloss_groups.items()
+            }
+        }
+        console.print_json(data=report)
+        return
+    
+    # Heatmap-style table
+    for group in sorted(gloss_groups.keys()):
+        glosses = gloss_groups[group]
+        have_in_group = sum(1 for g in glosses if g in files)
+        total_in_group = len(glosses)
+        pct = have_in_group / total_in_group * 100 if total_in_group else 0
+        
+        # Color based on coverage
+        if pct == 100:
+            color = "green"
+        elif pct >= 50:
+            color = "yellow"
+        else:
+            color = "red"
+        
+        table = Table(title=f"Group {group} ({have_in_group}/{total_in_group} = {pct:.0f}%)", style=color)
+        table.add_column("Gloss")
+        table.add_column("Status")
+        
+        for g in sorted(glosses):
+            status = "[green]✓[/green]" if g in files else "[red]✗[/red]"
+            table.add_row(g, status)
+        
+        console.print(table)
+        console.print(f"  [{color}]{have_in_group}/{total_in_group} ({pct:.0f}%)[/{color}]\n")
+    
+    # Summary
+    total_have = sum(1 for g in DEFAULT_GLOSS if g in files)
+    console.print(f"\n[bold]Overall: {total_have}/{len(DEFAULT_GLOSS)} glosses have samples ({total_have/len(DEFAULT_GLOSS)*100:.1f}%)[/bold]")
+    
+    missing = [g for g in DEFAULT_GLOSS if g not in files]
+    if missing:
+        console.print(f"[red]Missing ({len(missing)}): {', '.join(missing)}[/red]")
+
+
 @data_app.command("wlasl-manifest")
 def data_wlasl_manifest(
     index: Path = typer.Option(
@@ -254,6 +338,82 @@ def gloss_compare(
     except ValueError as exc:
         console.print(f"[red]{exc}[/red]")
         raise typer.Exit(code=1) from exc
+
+
+@gloss_app.command("duplicates")
+def gloss_duplicates(
+    directory: Path | None = typer.Option(
+        None,
+        "--directory",
+        "-d",
+        exists=True,
+        file_okay=False,
+        help="Custom sample directory. Defaults to data/samples.",
+    ),
+    threshold: float = typer.Option(
+        0.001,
+        "--threshold",
+        "-t",
+        help="Mean landmark distance threshold for near-duplicate detection",
+    ),
+    min_frames: int = typer.Option(
+        1,
+        "--min-frames",
+        help="Minimum frames required for comparison",
+    ),
+    fail_on_duplicate: bool = typer.Option(
+        False,
+        "--fail-on-duplicate",
+        help="Exit with code 1 if any near-duplicates found (for CI)",
+    ),
+) -> None:
+    """Detect near-duplicate gloss samples (same gloss, near-identical frames).
+    
+    Scans all sample pairs and reports pairs with mean landmark distance
+    below threshold. Use --fail-on-duplicate to fail CI when duplicates found.
+    """
+    from loru.data.compare import detect_near_duplicates
+    from loru.config import SAMPLES_DIR
+    
+    dir_path = directory or SAMPLES_DIR
+    if not dir_path.exists():
+        console.print(f"[red]Directory not found: {dir_path}[/red]")
+        raise typer.Exit(code=1)
+    
+    duplicates = detect_near_duplicates(dir_path, distance_threshold=threshold, min_frames=1)
+    
+    if not duplicates:
+        console.print("[green]No near-duplicates found.[/green]")
+        if fail_on_duplicate:
+            raise typer.Exit(code=0)
+        return
+    
+    table = Table(title=f"Near-Duplicate Gloss Pairs (threshold={threshold})")
+    table.add_column("Gloss A", style="cyan")
+    table.add_column("Gloss B", style="cyan")
+    table.add_column("Frames A", justify="right")
+    table.add_column("Frames B", justify="right")
+    table.add_column("Mean Distance", justify="right", style="red")
+    table.add_column("Max Distance", justify="right")
+    table.add_column("Possible Clone", justify="center")
+    
+    for dup in duplicates:
+        table.add_row(
+            dup["a"]["gloss"],
+            dup["b"]["gloss"],
+            str(dup["a"]["frames"]),
+            str(dup["b"]["frames"]),
+            f"{dup['mean_distance']:.6f}",
+            f"{dup['max_distance']:.6f}",
+            "YES" if dup["possible_clone"] else "NO",
+        )
+    
+    console.print(table)
+    console.print(f"\n[bold]Total near-duplicate pairs: {len(duplicates)}[/bold]")
+    
+    if fail_on_duplicate:
+        console.print("[red]Duplicates found — failing CI[/red]")
+        raise typer.Exit(code=1)
 
 
 @samples_app.command("list")
