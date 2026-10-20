@@ -256,6 +256,83 @@ def gloss_compare(
         raise typer.Exit(code=1) from exc
 
 
+@gloss_app.command("find-duplicates")
+def gloss_find_duplicates(
+    directory: Path | None = typer.Option(
+        None,
+        "--directory",
+        "-d",
+        exists=True,
+        file_okay=False,
+        help="Custom samples directory. Defaults to data/samples.",
+    ),
+    threshold: float = typer.Option(
+        0.001,
+        "--threshold",
+        "-t",
+        help="Mean landmark distance threshold for near-duplicate detection.",
+    ),
+    report: bool = typer.Option(
+        False,
+        "--report",
+        "-r",
+        help="Output machine-readable JSON report.",
+    ),
+) -> None:
+    """Find near-duplicate gloss frame sequences (exits 1 if found, CI-friendly)."""
+    from loru.config import SAMPLES_DIR
+    from loru.data.duplicate import find_near_duplicates
+
+    dir_path = directory or SAMPLES_DIR
+    duplicates = find_near_duplicates(dir_path, threshold)
+
+    if report:
+        console.print_json(
+            data=[
+                {
+                    "file_a": d.file_a,
+                    "file_b": d.file_b,
+                    "gloss": d.gloss,
+                    "frames_a": d.frames_a,
+                    "frames_b": d.frames_b,
+                    "mean_distance": d.mean_distance,
+                    "max_distance": d.max_distance,
+                    "threshold": d.threshold,
+                }
+                for d in duplicates
+            ]
+        )
+    else:
+        if not duplicates:
+            console.print(f"[green]No near-duplicates found in {dir_path} (threshold={threshold})[/green]")
+            raise typer.Exit(0)
+
+        table = Table(title=f"Near-Duplicate Gloss Frames (threshold={threshold})")
+        table.add_column("File A")
+        table.add_column("File B")
+        table.add_column("Gloss")
+        table.add_column("Frames A", justify="right")
+        table.add_column("Frames B", justify="right")
+        table.add_column("Mean Dist", justify="right")
+        table.add_column("Max Dist", justify="right")
+        for d in duplicates:
+            table.add_row(
+                Path(d.file_a).name,
+                Path(d.file_b).name,
+                d.gloss,
+                str(d.frames_a),
+                str(d.frames_b),
+                f"{d.mean_distance:.6f}",
+                f"{d.max_distance:.6f}",
+            )
+        console.print(table)
+        console.print(f"[red]Found {len(duplicates)} near-duplicate pair(s)[/red]")
+
+    if duplicates:
+        raise typer.Exit(1)
+    raise typer.Exit(0)
+
+
 @samples_app.command("list")
 def samples_list(
     gloss: str | None = typer.Option(
