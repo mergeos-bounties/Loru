@@ -179,6 +179,7 @@ System architecture and workflow — full width. Open the HTML files for **dark/
 ```text
 src/loru/
   cli.py
+  api/            # Optional FastAPI server (/health, /infer/text, /infer/voice)
   gui/            # PySide6 desktop demo (loru-gui)
   infer/          # text, voice, pipeline
   data/loader.py
@@ -187,6 +188,27 @@ src/loru/
 docs/screenshots/
 docs/diagrams/
 ```
+
+---
+
+## FastAPI server
+
+Install the optional `api` extra and launch via `loru serve` or `uvicorn`:
+
+```powershell
+pip install -e ".[api]"
+loru serve --host 127.0.0.1 --port 8766
+# or directly with uvicorn:
+uvicorn loru.api.app:app --host 127.0.0.1 --port 8766
+```
+
+| Endpoint | Tag | Description |
+| --- | --- | --- |
+| `GET /health` | `health` | Service readiness and default vocabulary count |
+| `GET /vocab` | `vocab` | Default sign gloss vocabulary |
+| `POST /infer/text` | `infer` | Landmark JSON sequence → predicted gloss & text |
+| `POST /infer/voice` | `infer` | Landmark JSON sequence → WAV path metadata or raw `audio/wav` bytes (`return_bytes=true` / `?format=wav`) |
+| `POST /infer/sentence` | `infer` | Multi-gloss sequence → sentence |
 
 ---
 
